@@ -17,10 +17,15 @@ public class ksiazka {
 
     public void wypozycz(){
         if(isCzyDostepna()){
-            System.out.println("książka: "+tytul+" jest dostepna, miłego czytania!");
+           // System.out.println("książka: "+tytul+" jest dostepna, miłego czytania!");
             setCzyDostepna(false);
         }
-    else System.out.println("Książka: "+this.tytul+" nie jest dostepna :( ");
+    else; //System.out.println("Książka: "+this.tytul+" nie jest dostepna :( ");
+
+    }
+
+    public String getTytul() {
+        return tytul;
     }
 
     public void zwroc(){
@@ -48,5 +53,6 @@ public class ksiazka {
         return this.autor;
     }
 
+    }
 
-}
+

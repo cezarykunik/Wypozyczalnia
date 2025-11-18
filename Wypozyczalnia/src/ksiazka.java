@@ -1,26 +1,42 @@
+import java.util.Objects;
+
 public class ksiazka {
 
-    private final String tytul;
-    private  final int ID;
-    private final String autor;
-    private  final int rokWydania;
+    private String tytul;
+    private int ID;
+    private String autor;
+    private int rokWydania;
     private boolean czyDostepna;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ksiazka ksiazka = (ksiazka) o;
+        return ID == ksiazka.ID && rokWydania == ksiazka.rokWydania && Objects.equals(tytul, ksiazka.tytul) && Objects.equals(autor, ksiazka.autor);
+    }
 
-    public ksiazka(String tytul,int ID,String autor, int rokWydania) {
-        this.tytul=tytul;
+    @Override
+    public int hashCode() {
+        return Objects.hash(tytul, ID, autor, rokWydania);
+    }
+//jesli nie nadpisze metody equals to nie bede porownywal obiektow tylko jakeis referencje  pamieci
+    public ksiazka(String tytul, int ID, String autor, int rokWydania) {
+        this.tytul = tytul;
         this.ID = ID;
         this.czyDostepna = true;
         this.autor = autor;
         this.rokWydania = rokWydania;
     }
 
-    public void wypozycz(){
-        if(isCzyDostepna()){
-           // System.out.println("książka: "+tytul+" jest dostepna, miłego czytania!");
+    public Boolean SprawdzDostepnoscIwypozycz() {
+        if (isCzyDostepna()) {
+            System.out.println("książka: " + tytul + " jest dostepna, miłego czytania!");
             setCzyDostepna(false);
+            return true;
+        } else {
+            System.out.println("Książka: " + this.tytul + " nie jest dostepna :( ");
+            return false;
         }
-    else; //System.out.println("Książka: "+this.tytul+" nie jest dostepna :( ");
 
     }
 
@@ -28,7 +44,11 @@ public class ksiazka {
         return tytul;
     }
 
-    public void zwroc(){
+    public int getID() {
+        return ID;
+    }
+
+    public void zwroc() {
         setCzyDostepna(true);
 
     }
@@ -42,17 +62,15 @@ public class ksiazka {
         return czyDostepna;
     }
 
-    public String toString(){
-        return "Tytul: "+this.tytul+"\n"+"ID ksiązki: "+ this.ID+"\n"+ "autorem jest: " +this.autor+
-                "\n"+"rokWydania: "+this.rokWydania+"\n"+"dostępnosc: "+this.czyDostepna;
+    public String toString() {
+        return "Tytul: " + this.tytul + "\n" + "ID ksiązki: " + this.ID + "\n" + "autorem jest: " + this.autor +
+                "\n" + "rokWydania: " + this.rokWydania + "\n" + "dostępnosc: " + this.czyDostepna;
     }
-    public int getID() {
-        return this.ID;
-    }
+
     public String getAutor() {
         return this.autor;
     }
 
-    }
+}
 
 

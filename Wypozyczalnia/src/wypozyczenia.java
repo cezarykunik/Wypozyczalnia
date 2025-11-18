@@ -3,41 +3,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class wypozyczenia {
-    //private int ID;
+    private int ID;
     private ksiazka wypozyczonaKsiazka;
     private uzytkownik uzytkownikBiblioteki;
     private LocalDate dataWypozyczenia;
-    private LocalDate  dataZwrotu;
-    private static List<wypozyczenia> wypozyczeniali=new ArrayList<wypozyczenia>();
+    private LocalDate dataZwrotu;
 
-    public wypozyczenia( ksiazka wypozyczonaKsiazka, uzytkownik uzytkownikBiblioteki) {
-         this.uzytkownikBiblioteki = uzytkownikBiblioteki;
-        // this.ID = ID;
+    public ksiazka getWypozyczonaKsiazka() {
+        return wypozyczonaKsiazka;
+    }
+
+    public wypozyczenia(ksiazka wypozyczonaKsiazka, uzytkownik uzytkownikBiblioteki) {
+        this.uzytkownikBiblioteki = uzytkownikBiblioteki;
         this.wypozyczonaKsiazka = wypozyczonaKsiazka;
-        this.dataWypozyczenia=LocalDate.now();
-        this.dataZwrotu=LocalDate.now().plusDays(14);
-        wypozyczeniali.add(this);
-
+        this.dataWypozyczenia = LocalDate.now();
+        this.dataZwrotu = LocalDate.now().plusDays(14);
 
     }
-/*    public static void dodajWypozeczenieDoListy(ksiazka ksiega, uzytkownik user) {
-        wypozyczenia rekord=new wypozyczenia(ksiega,user);
-        if(!wypozyczeniali.contains(rekord)) {
-        wypozyczeniali.add(rekord);
-    }}*/
 
+    public uzytkownik getUzytkownikBiblioteki() {
+        return uzytkownikBiblioteki;
+    }
 
-    public static List<wypozyczenia> getWypozyczeniali() {
-        for(wypozyczenia x: wypozyczeniali) {
-            System.out.println(x.toString());
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+    public void zakonczWypozyczenie()
+    {   LocalDate data=LocalDate.now();
+        this.dataZwrotu=data;
+        wypozyczonaKsiazka.setCzyDostepna(true);
+    }
+
+    public Boolean czyPoTerminie() {
+        if (LocalDate.now().compareTo(dataWypozyczenia) <= 15) {
+            System.out.println("Po terminie! kara!");
+            return true;
+        } else {
+            System.out.println("Jescze jest troche czasu na oddanie");
+            return false;
         }
-
-        return wypozyczeniali;
     }
-    public String toString()
-    {
-        return wypozyczonaKsiazka.getTytul()+"  "+ uzytkownikBiblioteki.getImie()+" "+uzytkownikBiblioteki.getNazwisko()+
-                " wypozyczona: "+this.dataWypozyczenia   +" do zwrotu: "+this.dataZwrotu;
+
+
+    public String toString() {
+        return wypozyczonaKsiazka.getTytul() + "\n" + uzytkownikBiblioteki.getImie() + " " + uzytkownikBiblioteki.getNazwisko() +
+                "\nwypozyczona:   "+ this.dataWypozyczenia + "\ndo zwrotu: " + this.dataZwrotu + "\nID wypozyczenia: " + this.ID;
     }
 }
 

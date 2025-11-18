@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class uzytkownik {
     private int ID;
@@ -17,86 +16,99 @@ public class uzytkownik {
         return nazwisko;
     }
 
-    public uzytkownik(String imie, String nazwisko) {
-        this.ID = 0;
+    public uzytkownik(int ID, String imie, String nazwisko) {
+        this.ID = ID;
         this.imie = imie;
         this.nazwisko = nazwisko;
         this.listaWypozyczen = new ArrayList<ksiazka>();
     }
 
-/*    public void wypozyczKsiazke(ArrayList<ksiazka> lista) {
+    public uzytkownik() {
+        this.ID = ID;
+        this.imie = imie;
+        this.nazwisko = nazwisko;
+        this.listaWypozyczen = new ArrayList<ksiazka>();
+    }
 
-        Scanner scanner = new Scanner(System.in);
-        int wybor;
+    /*    public void wypozyczKsiazke(ArrayList<ksiazka> lista) {
 
-        do {
+            Scanner scanner = new Scanner(System.in);
+            int wybor;
 
-            System.out.println("\n--- MENU ---");
-            System.out.println("1. Pokaż listę książek");
-            System.out.println("2. Wypożycz książkę");
-            System.out.println("3-Pokaz wszystkie bieżące wypożyczenia uzytkownika!");
-            System.out.println("0. Wyjście");
-            System.out.print("Wybierz opcję: ");
-            wybor = scanner.nextInt();
+            do {
 
-            switch (wybor) {
-                case 1:
-                    System.out.println("\nLista książek:");
-                    for (int i = 0; i < lista.size(); i++) {
-                        ksiazka k = lista.get(i);
-                        System.out.println((i + 1) + ". " + k.getTytul() + " | Dostępna: " + k.isCzyDostepna());
-                    }
-                    break;
+                System.out.println("\n--- MENU ---");
+                System.out.println("1. Pokaż listę książek");
+                System.out.println("2. Wypożycz książkę");
+                System.out.println("3-Pokaz wszystkie bieżące wypożyczenia uzytkownika!");
+                System.out.println("0. Wyjście");
+                System.out.print("Wybierz opcję: ");
+                wybor = scanner.nextInt();
 
-                case 2:
-                    System.out.println("\nWybierz numer książki do wypożyczenia:");
-                    for (int i = 0; i < lista.size(); i++) {
-                        ksiazka k = lista.get(i);
-                        System.out.println((i + 1) + ". " + k.getTytul() + " | Dostępna: " + k.isCzyDostepna());
-                    }
-                    int numer = scanner.nextInt();
-                    if (numer >= 1 && numer <= lista.size()) {
-                        ksiazka wybrana = lista.get(numer - 1);
-                        wybrana.wypozycz();
-                        listaWypozyczen.add(wybrana);
+                switch (wybor) {
+                    case 1:
+                        System.out.println("\nLista książek:");
+                        for (int i = 0; i < lista.size(); i++) {
+                            ksiazka k = lista.get(i);
+                            System.out.println((i + 1) + ". " + k.getTytul() + " | Dostępna: " + k.isCzyDostepna());
+                        }
+                        break;
 
-                    } else {
-                        System.out.println("Niepoprawny numer książki!");
-                    }
-                    break;
-                case 3:
+                    case 2:
+                        System.out.println("\nWybierz numer książki do wypożyczenia:");
+                        for (int i = 0; i < lista.size(); i++) {
+                            ksiazka k = lista.get(i);
+                            System.out.println((i + 1) + ". " + k.getTytul() + " | Dostępna: " + k.isCzyDostepna());
+                        }
+                        int numer = scanner.nextInt();
+                        if (numer >= 1 && numer <= lista.size()) {
+                            ksiazka wybrana = lista.get(numer - 1);
+                            wybrana.wypozycz();
+                            listaWypozyczen.add(wybrana);
 
-                    if(listaWypozyczen.size()>0)
-                    {
-                        pokazWypozyczenia();
-                    }else {
-                        System.out.println("aktualnie, brak wypozyczen!");
-                    }break;
-                case 0:
-                    System.out.println("Koniec programu.");
-                    break;
+                        } else {
+                            System.out.println("Niepoprawny numer książki!");
+                        }
+                        break;
+                    case 3:
 
-                default:
-                    System.out.println("Niepoprawna opcja!");
-            }
+                        if(listaWypozyczen.size()>0)
+                        {
+                            pokazWypozyczenia();
+                        }else {
+                            System.out.println("aktualnie, brak wypozyczen!");
+                        }break;
+                    case 0:
+                        System.out.println("Koniec programu.");
+                        break;
+
+                    default:
+                        System.out.println("Niepoprawna opcja!");
+                }
 
 
-        } while (wybor != 0);
+            } while (wybor != 0);
 
-        scanner.close();
-    }*/
-    public void wypozyczKsiazke(ksiazka wybrana)
-    {
-        wybrana.wypozycz();
-        wypozyczenia x=new wypozyczenia(wybrana,this);
+            scanner.close();
+        }*/
+    public void wypozyczKsiazke(ksiazka k) {
+        listaWypozyczen.add(k);
 
     }
 
+    public void zwrocKsiazke(ksiazka k) {
+        listaWypozyczen.remove(k);
 
+    }
+
+    @Override
+    public String toString() {
+        return this.imie + " " + this.nazwisko;
+    }
 
     public void pokazWypozyczenia() {
         for (ksiazka x : listaWypozyczen) {
-            System.out.println("Uzytkownik: "+this.imie+this.nazwisko+" wypozyczyl: " +x.getTytul().toString());
+            System.out.println("Uzytkownik: " + this.imie + this.nazwisko + " wypozyczyl: " + x.getTytul().toString());
         }
     }
 

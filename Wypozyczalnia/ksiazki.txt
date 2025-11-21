@@ -1,0 +1,50 @@
+Hobbit,1,J.R.R. Tolkien,1937
+Harry Potter i Kamień Filozoficzny,2,J.K. Rowling,1997
+Władca Pierścieni: Drużyna Pierścienia,3,J.R.R. Tolkien,1954
+Opowieść o dwóch miastach,4,Charles Dickens,1859
+Mały Książę,5,Antoine de Saint-Exupéry,1943
+Zbrodnia i kara,6,Fiodor Dostojewski,1866
+Przeminęło z wiatrem,7,Margaret Mitchell,1936
+1984,8,George Orwell,1949
+Duma i uprzedzenie,9,Jane Austen,1813
+Anna Karenina,10,Leo Tolstoy,1877
+Lolita,11,Vladimir Nabokov,1955
+Mistrz i Małgorzata,12,Mikhail Bulgakov,1967
+Proces,13,Franz Kafka,1925
+Sto lat samotności,14,Gabriel García Márquez,1967
+Zielona Mila,15,Stephen King,1996
+Diuna,16,Frank Herbert,1965
+Kod Leonarda da Vinci,17,Dan Brown,2003
+Inferno,18,Dan Brown,2013
+Angielski pacjent,19,Michael Ondaatje,1992
+Podróż do wnętrza Ziemi,20,Jules Verne,1864
+Wyspa skarbów,21,Robert Louis Stevenson,1883
+Hrabia Monte Christo,22,Alexandre Dumas,1844
+Trzej muszkieterowie,23,Alexandre Dumas,1844
+Moby Dick,24,Herman Melville,1851
+Wichrowe Wzgórza,25,Emily Brontë,1847
+Jane Eyre,26,Charlotte Brontë,1847
+Cień wiatru,27,Carlos Ruiz Zafón,2001
+Gra o tron,28,George R.R. Martin,1996
+Starcie królów,29,George R.R. Martin,1998
+Nawałnica mieczy,30,George R.R. Martin,2000
+Uczta dla wron,31,George R.R. Martin,2005
+Taniec ze smokami,32,George R.R. Martin,2011
+Atlas chmur,33,David Mitchell,2004
+Cień góry,34,Gregory David Roberts,2002
+Życie Pi,35,Yann Martel,2001
+Papierowe miasta,36,John Green,2008
+Gwiazd naszych wina,37,John Green,2012
+Fangirl,38,Rainbow Rowell,2013
+Eleanor & Park,39,Rainbow Rowell,2013
+Cisza białego miasta,40,Eva García Sáenz de Urturi,2016
+Szczygieł,41,Donna Tartt,2013
+Dziewczyna z pociągu,42,Paula Hawkins,2015
+Mężczyźni którzy nienawidzą kobiet,43,Stieg Larsson,2005
+Dziewczyna w sieci pająka,44,Stieg Larsson,2006
+Zamek,45,Franz Kafka,1926
+Bracia Karamazow,46,Fiodor Dostojewski,1880
+Idiota,47,Fiodor Dostojewski,1869
+Wyznania gejszy,48,Arthur Golden,1997
+Pachnidło,49,Patrick Süskind,1985
+Shantaram,50,Gregory David Roberts,2003

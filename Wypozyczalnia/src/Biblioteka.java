@@ -1,17 +1,19 @@
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 //stworz metody do logowania, jakos ogarnij nadanie dostepow do userow, pomysl nad struktura dziedziczenia?
 // tak zeby cos nowego sie nauczyc, potem po userze dodajmy jakies rodzaje ksiazek- gatunek? ale to chyba dopiero po
 //dodaniu z bazy danych książek
-//potem wyswietlanie rekordow dla konkretnego usera,ok
-// metoda zwroc ksiazke - i to dzisiaj przyjacielu
+
 public class Biblioteka {
     private String nazwa;
     private String adres;
-    private Map<Integer, ksiazka> ksiazkiWrazZID;
-    public Map<Integer, uzytkownik> userWrazZID;
-    public List<wypozyczenia> listaWypozyczen;
-    public List<wypozyczenia> listaWypozyczenZakonczonych;
+    private Map<Integer, Ksiazka> ksiazkiWrazZID;
+    public Map<Integer, User> userWrazZID;
+    public List<Wypozyczenia> listaWypozyczen;
+    public List<Wypozyczenia> listaWypozyczenZakonczonych;
+
     public Biblioteka(String nazwa, String adres) {
         this.nazwa = nazwa;
         this.adres = adres;
@@ -33,12 +35,12 @@ public class Biblioteka {
         int ID = wczytajID();
 
         int IDUser = userWrazZID.size() + 1;
-        uzytkownik nowy = new uzytkownik(ID, imie, Nazwisko);
+        Uzytkownik nowy = new Uzytkownik(imie, Nazwisko, ID);
 
         userWrazZID.put(IDUser, nowy);
     }
 
-    public void dodajUzytkownika(uzytkownik u) {
+    public void dodajUzytkownika(User u) {
         int IDUser = userWrazZID.size() + 1;
         userWrazZID.put(IDUser, u);
 
@@ -54,27 +56,27 @@ public class Biblioteka {
         String Autor = wczytajAutora();
         int rokWydania = wczytajRokwydania();
 
-        ksiazka nowa = new ksiazka(Tytul, ID, Autor, rokWydania);
+        Ksiazka nowa = new Ksiazka(Tytul, ID, Autor, rokWydania);
         ksiazkiWrazZID.put(noweID, nowa);
     }
 
-    public void dodajKsiazke(ksiazka k) {
+    public void dodajKsiazke(Ksiazka k) {
         int noweID = ksiazkiWrazZID.size() + 1;  // automatyczne ID
         ksiazkiWrazZID.put(noweID, k);
     }
 
     public void wypozyczKsiazke() {
-        uzytkownik u = wybierzUzytkownika();
+        Uzytkownik u = wybierzUzytkownika();
         System.out.println("Wyswietlę teraz liste ksiązek :\n");
         wyswietlListeKsiazek();
         System.out.println("Którą ksiazke chcesz wypożyczyc? Wybierz numer: ");
         int ID;
         ID = wybierzNumerWmenu();
-        ksiazka wybrana = ksiazkiWrazZID.get(ID);
+        Ksiazka wybrana = ksiazkiWrazZID.get(ID);
 
         if (wybrana.SprawdzDostepnoscIwypozycz()) {
             u.wypozyczKsiazke(wybrana);
-            wypozyczenia x = new wypozyczenia(wybrana, u);
+            Wypozyczenia x = new Wypozyczenia(wybrana, u);
             listaWypozyczen.add(x);
             x.setID(listaWypozyczen.size());
 
@@ -88,11 +90,10 @@ public class Biblioteka {
 
     }
 
-    public uzytkownik wybierzUzytkownika() {
-        uzytkownik wybrany = new uzytkownik();
+    public Uzytkownik wybierzUzytkownika() {
+        Uzytkownik wybrany = new Uzytkownik("", "", 0);
         while (true) {
-            System.out.println("Wybierz co chcesz zrobic: \n 1-> Wybierz istniejącego użytkownika \n " +
-                    "2-> Stwórz użytkownika \n 3-> Wyjdź z menu");
+            System.out.println("Wybierz co chcesz zrobic: \n 1-> Wybierz istniejącego użytkownika \n " + "2-> Stwórz użytkownika \n 3-> Wyjdź z menu");
             int x = wybierzNumerWmenu();
 
             switch (x) {
@@ -106,23 +107,21 @@ public class Biblioteka {
                         continue;
                     } else {
                         System.out.println("Wybrales: " + userWrazZID.get(c));
-                        wybrany = userWrazZID.get(c);
+                        wybrany = (Uzytkownik) userWrazZID.get(c);
                         break;
                     }
                 case 2:
                     dodajUzytkownika();
                     System.out.println("Wyświetlę teraz listę uzytkowników!");
                     wyświetlListeUzytkownikow();
-                    System.out.println("Wybierz teraz użytkownika do dalszej pracy \n" +
-                            "Jeśli chcesz wrócic do poprzedniego Menu, kliknij numer o 1 większy niż" +
-                            " wyświetlany maksymalny numer");
+                    System.out.println("Wybierz teraz użytkownika do dalszej pracy \n" + "Jeśli chcesz wrócic do poprzedniego Menu, kliknij numer o 1 większy niż" + " wyświetlany maksymalny numer");
                     int q = wybierzNumerWmenu();
 
                     if (q == userWrazZID.size() + 1) {
                         continue;
                     }
                     System.out.println("Wybrales: " + userWrazZID.get(q));
-                    wybrany = userWrazZID.get(q);
+                    wybrany = (Uzytkownik) userWrazZID.get(q);
                     break;
                 default:
                     break;
@@ -139,19 +138,19 @@ public class Biblioteka {
         }
     }
 
-    //metody do oblsugi skanera
+
     public void wyswietlListeKsiazek() {
 
-        for (Map.Entry<Integer, ksiazka> e : ksiazkiWrazZID.entrySet()) {
-            System.out.println(e.getKey() + " -> " + e.getValue().getTytul());
+        for (Map.Entry<Integer, Ksiazka> e : ksiazkiWrazZID.entrySet()) {
+            System.out.println(e.getKey() + " -> " + e.getValue().toString());
         }
 
 
     }
 
-    public void wyswietlListeWypozyczen(uzytkownik user) {
+    public void wyswietlListeWypozyczen(Uzytkownik user) {
 
-        for (wypozyczenia w : listaWypozyczen) {
+        for (Wypozyczenia w : listaWypozyczen) {
             if (w.getUzytkownikBiblioteki().equals(user)) {
                 System.out.println(w.toString());
             }
@@ -162,15 +161,16 @@ public class Biblioteka {
 
     public void wyswietlListeWypozyczen() {
 
-        for (wypozyczenia w : listaWypozyczen) {
+        for (Wypozyczenia w : listaWypozyczen) {
 
             System.out.println(w.toString());
-            System.out.println("\n");
+
         }
     }
+
     public void wyswietlListeWypozyczenZakonczonych() {
 
-        for (wypozyczenia w : listaWypozyczenZakonczonych) {
+        for (Wypozyczenia w : listaWypozyczenZakonczonych) {
 
             System.out.println(w.toString());
             System.out.println("----------\n");
@@ -179,8 +179,8 @@ public class Biblioteka {
 
 
     public void wyświetlListeUzytkownikow() {
-        for (Map.Entry<Integer, uzytkownik> e : userWrazZID.entrySet()) {
-            System.out.println(e.getKey() + " -> " + e.getValue().getImie() + e.getValue().getNazwisko());
+        for (Map.Entry<Integer, User> e : userWrazZID.entrySet()) {
+            System.out.println(e.getKey() + " -> " + e.getValue().toString());
         }
 
     }
@@ -221,7 +221,7 @@ public class Biblioteka {
         }
 
         return ID;
-    }// jakie ID do uzytkwonika? czyje ? przemysl
+    }// ID user to jedno, ID ksiazki to durgie, ID wypozyczenia to co innego
 
     private int wczytajRokwydania() {
         Scanner scanner = new Scanner(System.in);
@@ -351,23 +351,23 @@ public class Biblioteka {
     }
 
     public void zwrocKsiazke() {
-        uzytkownik u = wybierzUzytkownika();
+        Uzytkownik u = wybierzUzytkownika();
 
         System.out.println("Którą ksiazke chcesz zwrócic? Wybierz numer: \n");
         wyswietlListeWypozyczen(u);
         int ID;
         ID = wybierzNumerWmenu() - 1;
-        ksiazka ksiazka = listaWypozyczen.get(ID).getWypozyczonaKsiazka();
+        Ksiazka ksiazka = listaWypozyczen.get(ID).getWypozyczonaKsiazka();
 
 
-        wypozyczenia doUsuniecia = null;
-        for (wypozyczenia wyp : listaWypozyczen) {
+        Wypozyczenia doUsuniecia = null;
+        for (Wypozyczenia wyp : listaWypozyczen) {
             if (wyp.getUzytkownikBiblioteki().equals(u) && wyp.getWypozyczonaKsiazka().equals(ksiazka)) {
 
                 u.zwrocKsiazke(wyp.getWypozyczonaKsiazka());
                 wyp.getWypozyczonaKsiazka().zwroc();
                 wyp.zakonczWypozyczenie();
-                doUsuniecia=wyp;
+                doUsuniecia = wyp;
             }
         }
         listaWypozyczenZakonczonych.add(doUsuniecia);
@@ -377,11 +377,63 @@ public class Biblioteka {
         System.out.println("lista wypozyczen wszystkich aktualnych:\n");
         wyswietlListeWypozyczen();
         System.out.println("lista wypozyczen usera:\n");
-        u.pokazWypozyczenia();
+        u.wyswietlListeWypozyczonychKsiazek();
         System.out.println("czy ksiazka z reokrdu wyp jest dostepna:\n");
         System.out.println(ksiazka.isCzyDostepna());
         System.out.println("lista zakończonych wypożyczen!");
         wyswietlListeWypozyczenZakonczonych();
     }
 
+    public void odczytPlikuKsiazki() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("ksiazki.txt"));
+
+            String linia;
+            while ((linia = br.readLine()) != null) {
+                // System.out.println(linia);
+                String[] liniaSplit = linia.split(",");
+                Ksiazka ksiazka = new Ksiazka(liniaSplit[0],
+                        Integer.parseInt(liniaSplit[1]),
+                        liniaSplit[2], Integer.parseInt(liniaSplit[3]));// odczyt linii
+                // z pliku, podzial stringa na slowa,
+                //inicjalizacja konstruktora ksiazka odczytanymi danymi
+                dodajKsiazke(ksiazka);
+            }
+
+            br.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void odczytPlikuUzytkownicy() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("uzytkownicy.txt"));
+
+            String linia;
+            while ((linia = br.readLine()) != null) {
+                // System.out.println(linia);
+                String[] liniaSplit = linia.split(",");
+                String imie = liniaSplit[0];
+                String nazwisko = liniaSplit[1];
+                int ID = Integer.parseInt(liniaSplit[2]);
+                String Role = liniaSplit[3];
+                if (Role.equals("Bibliotekarz")) {
+                    User u = new Bibliotekarz(imie, nazwisko, ID);
+                    dodajUzytkownika(u);
+                } else {
+                    User u = new Uzytkownik(imie, nazwisko, ID);
+                    dodajUzytkownika(u);
+                }
+
+
+            }
+
+            br.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

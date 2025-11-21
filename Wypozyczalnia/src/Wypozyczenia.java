@@ -1,19 +1,17 @@
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-public class wypozyczenia {
+public class Wypozyczenia {
     private int ID;
-    private ksiazka wypozyczonaKsiazka;
-    private uzytkownik uzytkownikBiblioteki;
+    private Ksiazka wypozyczonaKsiazka;
+    private Uzytkownik uzytkownikBiblioteki;
     private LocalDate dataWypozyczenia;
     private LocalDate dataZwrotu;
 
-    public ksiazka getWypozyczonaKsiazka() {
+    public Ksiazka getWypozyczonaKsiazka() {
         return wypozyczonaKsiazka;
     }
 
-    public wypozyczenia(ksiazka wypozyczonaKsiazka, uzytkownik uzytkownikBiblioteki) {
+    public Wypozyczenia(Ksiazka wypozyczonaKsiazka, Uzytkownik uzytkownikBiblioteki) {
         this.uzytkownikBiblioteki = uzytkownikBiblioteki;
         this.wypozyczonaKsiazka = wypozyczonaKsiazka;
         this.dataWypozyczenia = LocalDate.now();
@@ -21,7 +19,7 @@ public class wypozyczenia {
 
     }
 
-    public uzytkownik getUzytkownikBiblioteki() {
+    public Uzytkownik getUzytkownikBiblioteki() {
         return uzytkownikBiblioteki;
     }
 
@@ -47,7 +45,7 @@ public class wypozyczenia {
 
     public String toString() {
         return wypozyczonaKsiazka.getTytul() + "\n" + uzytkownikBiblioteki.getImie() + " " + uzytkownikBiblioteki.getNazwisko() +
-                "\nwypozyczona:   "+ this.dataWypozyczenia + "\ndo zwrotu: " + this.dataZwrotu + "\nID wypozyczenia: " + this.ID;
+                "\nwypozyczona: "+ this.dataWypozyczenia + "\n zwrotu: " + this.dataZwrotu + "\nID wypozyczenia: " + this.ID;
     }
 }
 

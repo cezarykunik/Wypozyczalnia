@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class ksiazka {
+public class Ksiazka {
 
     private String tytul;
     private int ID;
@@ -8,10 +8,18 @@ public class ksiazka {
     private int rokWydania;
     private boolean czyDostepna;
 
+    public Ksiazka(String tytul, int ID, String autor, int rokWydania) {
+        this.tytul = tytul;
+        this.ID = ID;
+        this.czyDostepna = true;
+        this.autor = autor;
+        this.rokWydania = rokWydania;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ksiazka ksiazka = (ksiazka) o;
+        Ksiazka ksiazka = (Ksiazka) o;
         return ID == ksiazka.ID && rokWydania == ksiazka.rokWydania && Objects.equals(tytul, ksiazka.tytul) && Objects.equals(autor, ksiazka.autor);
     }
 
@@ -20,13 +28,6 @@ public class ksiazka {
         return Objects.hash(tytul, ID, autor, rokWydania);
     }
 //jesli nie nadpisze metody equals to nie bede porownywal obiektow tylko jakeis referencje  pamieci
-    public ksiazka(String tytul, int ID, String autor, int rokWydania) {
-        this.tytul = tytul;
-        this.ID = ID;
-        this.czyDostepna = true;
-        this.autor = autor;
-        this.rokWydania = rokWydania;
-    }
 
     public Boolean SprawdzDostepnoscIwypozycz() {
         if (isCzyDostepna()) {

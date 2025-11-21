@@ -1,33 +1,27 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class uzytkownik {
-    private int ID;
-    private String imie;
-    private String nazwisko;
-    private List<ksiazka> listaWypozyczen;
+public class Uzytkownik extends User implements wypozyczającyKsiazki {
+
+    private List<Ksiazka> listaWypozyczen;
 
 
     public String getImie() {
-        return imie;
+        return super.Imie;
     }
 
     public String getNazwisko() {
-        return nazwisko;
+        return super.Nazwisko;
     }
 
-    public uzytkownik(int ID, String imie, String nazwisko) {
-        this.ID = ID;
-        this.imie = imie;
-        this.nazwisko = nazwisko;
-        this.listaWypozyczen = new ArrayList<ksiazka>();
+    public Uzytkownik(String imie, String nazwisko, int ID) {
+        super(imie, nazwisko, ID);
+        this.listaWypozyczen = new ArrayList<Ksiazka>();
     }
 
-    public uzytkownik() {
-        this.ID = ID;
-        this.imie = imie;
-        this.nazwisko = nazwisko;
-        this.listaWypozyczen = new ArrayList<ksiazka>();
+    public Uzytkownik() {
+        super("", "", 0);
+        this.listaWypozyczen = new ArrayList<Ksiazka>();
     }
 
     /*    public void wypozyczKsiazke(ArrayList<ksiazka> lista) {
@@ -91,27 +85,38 @@ public class uzytkownik {
 
             scanner.close();
         }*/
-    public void wypozyczKsiazke(ksiazka k) {
+    public void wypozyczKsiazke(Ksiazka k) {
         listaWypozyczen.add(k);
 
     }
 
-    public void zwrocKsiazke(ksiazka k) {
+    public void zwrocKsiazke(Ksiazka k) {
         listaWypozyczen.remove(k);
 
     }
 
     @Override
     public String toString() {
-        return this.imie + " " + this.nazwisko;
+        return super.toString();
     }
 
-    public void pokazWypozyczenia() {
-        for (ksiazka x : listaWypozyczen) {
-            System.out.println("Uzytkownik: " + this.imie + this.nazwisko + " wypozyczyl: " + x.getTytul().toString());
+    public void wyswietlListeWypozyczonychKsiazek() {
+        for (Ksiazka x : listaWypozyczen) {
+            System.out.println("Uzytkownik: " + super.Imie + super.Nazwisko + " wypozyczyl: " + x.getTytul().toString());
         }
     }
 
+    public void wyswietlListeSwoichWypozyczen() {
+
+    }
+
+    public void wyswietlListeSwoichWypozyczen(Biblioteka biblioteka) {
+        biblioteka.wyswietlListeWypozyczen(this);
+    }
+
+    public String getRole() {
+        return "Uzytkownik";
+    }
 }
 
 

@@ -10,12 +10,8 @@ public class Main {
         User panBibliotekarz = new Bibliotekarz("Pan", "Bibliotekarz", 123);
         k3.setCzyDostepna(false);
 
-        BibliotekaPodkowa.odczytPlikuKsiazki();
-        BibliotekaPodkowa.odczytPlikuUzytkownicy();
-        System.out.println("odczytane z pliku ksiazki :");
-        BibliotekaPodkowa.wyswietlListeKsiazek();
-        System.out.println("odczytani z pliku Uzytkownicy :");
-        BibliotekaPodkowa.wyświetlListeUzytkownikow();
+        BibliotekaPodkowa.Start();
+
         //mamy wielka liste ksiazek i uzytkownik z podzialem na użytkownik i bibliotekarz- jutro logowanie i wielkie menu
         //korzystamyu z instanceof aby sie zalogowac itp, fajne menu, ogolnie spinajace calty systemik, sama przyjemna robota
         //  BibliotekaPodkowa.dodajUzytkownika(cezary);

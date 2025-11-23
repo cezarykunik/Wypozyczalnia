@@ -9,18 +9,21 @@ public class Uzytkownik extends User implements wypozyczającyKsiazki {
     public String getImie() {
         return super.Imie;
     }
-
+    public void WyswietlMenu(){
+        System.out.println("Jestem Uzytkownikiem, o to co potrafie: ");
+        System.out.println("bkla bla bla, takie tam uzytkonikowe sprawki ");
+    }
     public String getNazwisko() {
         return super.Nazwisko;
     }
 
     public Uzytkownik(String imie, String nazwisko, int ID) {
-        super(imie, nazwisko, ID);
+        super(imie, nazwisko, ID,roola.Uzytkownik);
         this.listaWypozyczen = new ArrayList<Ksiazka>();
     }
 
     public Uzytkownik() {
-        super("", "", 0);
+        super("", "", 0,roola.Uzytkownik);
         this.listaWypozyczen = new ArrayList<Ksiazka>();
     }
 

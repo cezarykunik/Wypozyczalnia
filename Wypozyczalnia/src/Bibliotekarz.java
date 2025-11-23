@@ -1,12 +1,15 @@
 public class Bibliotekarz extends User implements wladajacyBiblioteka {
     public Bibliotekarz(String imie, String nazwisko, int ID) {
-        super(imie, nazwisko, ID);
+        super(imie, nazwisko, ID,roola.Bibliotekarz);
     }
-
     public void zaloguj(User u) {
 
     }
-
+    public void WyswietlMenu()
+    {
+        System.out.println("Jestem Bibliotekarzem, o to co potrafie: ");
+        System.out.println("bla bla bla , na te chwile nie potrzebuje konczyc, chodzi o szkic");
+    }
     @Override
     public void SetHaslo(String haslo) {
         super.SetHaslo(haslo);

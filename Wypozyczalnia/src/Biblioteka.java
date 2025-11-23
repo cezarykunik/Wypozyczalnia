@@ -23,8 +23,61 @@ public class Biblioteka {
         this.listaWypozyczen = new ArrayList<>();
         this.listaWypozyczenZakonczonych = new ArrayList<>();
     }
+    public void Start()
+    {
+        odczytPlikuUzytkownicy();
+        odczytPlikuKsiazki();
+
+        while (true) {
+
+            System.out.println("1->Wybierz Uzytkownika z Listy dostępnych uzytkownikow");
+            System.out.println("2->Dodaj Uzytkownika do listy  uzytkownikow");
+            System.out.println("3->Wyjdz z programu ");
+            int x=wybierzNumerWmenu();
+            User zalogowany=null;
+            switch (x)
+            {
+            case 1:
+                wyświetlListeUzytkownikow();
+                zalogowany= Zaloguj();
+                if(zalogowany instanceof Bibliotekarz)
+                {
+                    ((Bibliotekarz)zalogowany).WyswietlMenu();
+                }
+                else
+                {
+                    ((Uzytkownik)zalogowany).WyswietlMenu();
+                }
+                break;
+            case 2:
+                dodajUzytkownika();
+                break;
+            case 3:
+                System.out.println("koniec programu");
+            return;
+            default: return;
+
+        }}
+       // User zalogowany=Zaloguj();
 
 
+    }
+
+public User Zaloguj()
+{
+    System.out.println("wybierz uzytkownika z poniższej listy!");
+     int i=1;
+    for(User u:userWrazZID.values()) {
+        System.out.println(i+" "+u);
+        i++;
+    }
+    Scanner scanner=new Scanner(System.in);
+    int x=scanner.nextInt();
+    User zalogowany=userWrazZID.get(x);
+    return zalogowany;
+
+
+}
     public void dodajUzytkownika() {
 
         Scanner scanner = new Scanner(System.in);
@@ -33,11 +86,19 @@ public class Biblioteka {
         String imie = wczytajImieUzytkownika();
         String Nazwisko = wczytajNazwiskoUzytkownika();
         int ID = wczytajID();
-
+        roola r=wybierzRole();
         int IDUser = userWrazZID.size() + 1;
-        Uzytkownik nowy = new Uzytkownik(imie, Nazwisko, ID);
+        if(r==roola.Uzytkownik)
+        {
+            Uzytkownik nowy = new Uzytkownik(imie, Nazwisko, ID) ;
+            userWrazZID.put(IDUser, nowy);
+        }
+        else{        Bibliotekarz nowy = new Bibliotekarz(imie, Nazwisko, ID);
+            userWrazZID.put(IDUser, nowy);}
 
-        userWrazZID.put(IDUser, nowy);
+
+
+
     }
 
     public void dodajUzytkownika(User u) {
@@ -66,7 +127,7 @@ public class Biblioteka {
     }
 
     public void wypozyczKsiazke() {
-        Uzytkownik u = wybierzUzytkownika();
+        User u = wybierzUzytkownika();
         System.out.println("Wyswietlę teraz liste ksiązek :\n");
         wyswietlListeKsiazek();
         System.out.println("Którą ksiazke chcesz wypożyczyc? Wybierz numer: ");
@@ -75,8 +136,8 @@ public class Biblioteka {
         Ksiazka wybrana = ksiazkiWrazZID.get(ID);
 
         if (wybrana.SprawdzDostepnoscIwypozycz()) {
-            u.wypozyczKsiazke(wybrana);
-            Wypozyczenia x = new Wypozyczenia(wybrana, u);
+            ( (Uzytkownik)u).wypozyczKsiazke(wybrana);
+            Wypozyczenia x = new Wypozyczenia(wybrana, (Uzytkownik) u);
             listaWypozyczen.add(x);
             x.setID(listaWypozyczen.size());
 
@@ -90,8 +151,8 @@ public class Biblioteka {
 
     }
 
-    public Uzytkownik wybierzUzytkownika() {
-        Uzytkownik wybrany = new Uzytkownik("", "", 0);
+    public User wybierzUzytkownika() {
+        Uzytkownik wybrany = null;
         while (true) {
             System.out.println("Wybierz co chcesz zrobic: \n 1-> Wybierz istniejącego użytkownika \n " + "2-> Stwórz użytkownika \n 3-> Wyjdź z menu");
             int x = wybierzNumerWmenu();
@@ -322,6 +383,30 @@ public class Biblioteka {
             return autor;
         }
     }
+    private roola wybierzRole()
+    {
+        Scanner scanner = new Scanner(System.in);
+        int ID;
+
+        while (true) {
+            System.out.println("Wybierz 1- Uzytkownik lub 2- Bibliotekarz");
+
+            if (scanner.hasNextInt()) {  // sprawdza, czy następne wejście jest liczbą całkowitą
+                ID = scanner.nextInt();
+                break; // wychodzi z pętli, jeśli poprawne ID
+            } else {
+                System.out.println("Błąd! Wpisz liczbę całkowitą.");
+                scanner.next(); // odrzuca niepoprawne wejście
+            }
+        }
+        if(ID==1){
+            return roola.Uzytkownik;
+        }
+        else if(ID==2){
+            return roola.Bibliotekarz;
+        }
+        return null;
+    }
 
     private String wczytajNazwiskoUzytkownika() {
 
@@ -351,7 +436,7 @@ public class Biblioteka {
     }
 
     public void zwrocKsiazke() {
-        Uzytkownik u = wybierzUzytkownika();
+        Uzytkownik u = (Uzytkownik) wybierzUzytkownika();
 
         System.out.println("Którą ksiazke chcesz zwrócic? Wybierz numer: \n");
         wyswietlListeWypozyczen(u);

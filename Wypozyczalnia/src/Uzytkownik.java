@@ -4,26 +4,74 @@ import java.util.List;
 public class Uzytkownik extends User implements wypozyczającyKsiazki {
 
     private List<Ksiazka> listaWypozyczen;
+    private Biblioteka b;
 
+    public void setBiblioteka(Biblioteka b) {
+        this.b = b;
+    }
+
+    public void WyswietlMenu() {
+        System.out.println("Jestem Uzytkownikiem, o to co potrafie: ");
+        while (true) {
+
+            System.out.println("1-> Wyswietl wszystkie ksiazki!");
+            System.out.println("2-> Wypozycz ksiązke");
+            System.out.println("3-> Zwróc książke");
+            System.out.println("4->wyswietlListe Wypozyczen Zakonczonych- do oprogramowania");
+            System.out.println("5->Wyswietl Liste Ksiazek uzytkownika");
+            System.out.println("6-> Wyswietl liste aktualnych Wypozyczen!");
+
+            System.out.println("7-> wroc do MENU");
+            int x = this.b.wybierzNumerWmenu();
+            switch (x) {
+                case 1:
+                    wyswietlWszystkieKsiazki(this.b);
+                    break;
+                case 2:
+                    wypozyczKsiazke();
+                    break;
+                case 3:
+                    zwrocKsiazke();
+                    break;
+                case 4:
+                    System.out.println("do oprogramowania, czyto ma sens?");
+                    break;
+
+                case 5:
+                    for(Ksiazka k: listaWypozyczen) {
+                        System.out.println(k);
+                    }
+                    break;
+                case 6:
+                    wyswietlListeSwoichWypozyczen(b);
+                    break;
+
+                case 7:
+                    System.out.println("koniec programu");
+                    return;
+            }
+        }
+    }
 
     public String getImie() {
         return super.Imie;
     }
-    public void WyswietlMenu(){
-        System.out.println("Jestem Uzytkownikiem, o to co potrafie: ");
-        System.out.println("bkla bla bla, takie tam uzytkonikowe sprawki ");
-    }
+
     public String getNazwisko() {
         return super.Nazwisko;
     }
 
     public Uzytkownik(String imie, String nazwisko, int ID) {
-        super(imie, nazwisko, ID,roola.Uzytkownik);
+        super(imie, nazwisko, ID, roola.Uzytkownik);
         this.listaWypozyczen = new ArrayList<Ksiazka>();
     }
 
+    public void wyswietlWszystkieKsiazki(Biblioteka b) {
+        b.wyswietlListeKsiazek();
+    }
+
     public Uzytkownik() {
-        super("", "", 0,roola.Uzytkownik);
+        super("", "", 0, roola.Uzytkownik);
         this.listaWypozyczen = new ArrayList<Ksiazka>();
     }
 
@@ -88,13 +136,24 @@ public class Uzytkownik extends User implements wypozyczającyKsiazki {
 
             scanner.close();
         }*/
-    public void wypozyczKsiazke(Ksiazka k) {
-        listaWypozyczen.add(k);
+    public void wypozyczKsiazke() {
+        this.b.wypozyczKsiazke(this);
+
+        //listaWypozyczen.add(x);
 
     }
 
-    public void zwrocKsiazke(Ksiazka k) {
-        listaWypozyczen.remove(k);
+    public void addToListWypozyczen(Ksiazka k) {
+        this.listaWypozyczen.add(k);
+    }
+
+    public void removeFromListWypozyczen(Ksiazka k) {
+        this.listaWypozyczen.remove(k);
+    }
+
+    public void zwrocKsiazke() {
+        this.b.zwrocKsiazke(this);
+        // listaWypozyczen.remove(k);
 
     }
 

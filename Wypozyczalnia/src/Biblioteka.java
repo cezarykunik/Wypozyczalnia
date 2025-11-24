@@ -23,8 +23,8 @@ public class Biblioteka {
         this.listaWypozyczen = new ArrayList<>();
         this.listaWypozyczenZakonczonych = new ArrayList<>();
     }
-    public void Start()
-    {
+
+    public void Start() {
         odczytPlikuUzytkownicy();
         odczytPlikuKsiazki();
 
@@ -33,51 +33,51 @@ public class Biblioteka {
             System.out.println("1->Wybierz Uzytkownika z Listy dostępnych uzytkownikow");
             System.out.println("2->Dodaj Uzytkownika do listy  uzytkownikow");
             System.out.println("3->Wyjdz z programu ");
-            int x=wybierzNumerWmenu();
-            User zalogowany=null;
-            switch (x)
-            {
-            case 1:
-                wyświetlListeUzytkownikow();
-                zalogowany= Zaloguj();
-                if(zalogowany instanceof Bibliotekarz)
-                {
-                    ((Bibliotekarz)zalogowany).WyswietlMenu();
-                }
-                else
-                {
-                    ((Uzytkownik)zalogowany).WyswietlMenu();
-                }
-                break;
-            case 2:
-                dodajUzytkownika();
-                break;
-            case 3:
-                System.out.println("koniec programu");
-            return;
-            default: return;
+            int x = wybierzNumerWmenu();
+            User zalogowany = null;
+            switch (x) {
+                case 1:
+                    wyświetlListeUzytkownikow();
+                    zalogowany = Zaloguj();
+                    if (zalogowany instanceof Bibliotekarz) {
+                        ((Bibliotekarz) zalogowany).setBiblioteka(this);
+                        ((Bibliotekarz) zalogowany).WyswietlMenu();
+                    } else {
+                        ((Uzytkownik) zalogowany).setBiblioteka(this);
+                        ((Uzytkownik) zalogowany).WyswietlMenu();
+                    }
+                    break;
+                case 2:
+                    dodajUzytkownika();
+                    break;
+                case 3:
+                    System.out.println("koniec programu");
+                    return;
+                default:
+                    return;
 
-        }}
-       // User zalogowany=Zaloguj();
+            }
+        }
+        // User zalogowany=Zaloguj();
 
 
     }
 
-public User Zaloguj()
-{
-    System.out.println("wybierz uzytkownika z poniższej listy!");
-     int i=1;
-    for(User u:userWrazZID.values()) {
-        System.out.println(i+" "+u);
-        i++;
+    public User Zaloguj() {
+        System.out.println("wybierz uzytkownika z poniższej listy!");
+        int i = 1;
+        for (User u : userWrazZID.values()) {
+            System.out.println(i + " " + u);
+            i++;
+        }
+        Scanner scanner = new Scanner(System.in);
+        int x = scanner.nextInt();
+        User zalogowany = userWrazZID.get(x);
+        return zalogowany;
+
+
     }
-    Scanner scanner=new Scanner(System.in);
-    int x=scanner.nextInt();
-    User zalogowany=userWrazZID.get(x);
-    return zalogowany;
 
-
-}
     public void dodajUzytkownika() {
 
         Scanner scanner = new Scanner(System.in);
@@ -86,17 +86,15 @@ public User Zaloguj()
         String imie = wczytajImieUzytkownika();
         String Nazwisko = wczytajNazwiskoUzytkownika();
         int ID = wczytajID();
-        roola r=wybierzRole();
+        roola r = wybierzRole();
         int IDUser = userWrazZID.size() + 1;
-        if(r==roola.Uzytkownik)
-        {
-            Uzytkownik nowy = new Uzytkownik(imie, Nazwisko, ID) ;
+        if (r == roola.Uzytkownik) {
+            Uzytkownik nowy = new Uzytkownik(imie, Nazwisko, ID);
+            userWrazZID.put(IDUser, nowy);
+        } else {
+            Bibliotekarz nowy = new Bibliotekarz(imie, Nazwisko, ID);
             userWrazZID.put(IDUser, nowy);
         }
-        else{        Bibliotekarz nowy = new Bibliotekarz(imie, Nazwisko, ID);
-            userWrazZID.put(IDUser, nowy);}
-
-
 
 
     }
@@ -126,8 +124,8 @@ public User Zaloguj()
         ksiazkiWrazZID.put(noweID, k);
     }
 
-    public void wypozyczKsiazke() {
-        User u = wybierzUzytkownika();
+    public void wypozyczKsiazke(User u) {
+
         System.out.println("Wyswietlę teraz liste ksiązek :\n");
         wyswietlListeKsiazek();
         System.out.println("Którą ksiazke chcesz wypożyczyc? Wybierz numer: ");
@@ -136,17 +134,17 @@ public User Zaloguj()
         Ksiazka wybrana = ksiazkiWrazZID.get(ID);
 
         if (wybrana.SprawdzDostepnoscIwypozycz()) {
-            ( (Uzytkownik)u).wypozyczKsiazke(wybrana);
+            //((Uzytkownik) u).wypozyczKsiazke(wybrana);
             Wypozyczenia x = new Wypozyczenia(wybrana, (Uzytkownik) u);
             listaWypozyczen.add(x);
             x.setID(listaWypozyczen.size());
-
+            ((Uzytkownik) u).addToListWypozyczen(wybrana);
             System.out.println("Wyświetlę teraz wszystkie zarejestrowane rekordy wypożyczeń w naszej bibliotece");
             System.out.println(listaWypozyczen.toString());
 
         } else {
             System.out.println("Spróbujemy jeszcze raz!");
-            wypozyczKsiazke();
+            wypozyczKsiazke(u);
         }
 
     }
@@ -265,7 +263,7 @@ public User Zaloguj()
         return ID;
     }
 
-    private int wybierzNumerWmenu() {
+    public int wybierzNumerWmenu() {
         Scanner scanner = new Scanner(System.in);
         int ID;
 
@@ -383,8 +381,8 @@ public User Zaloguj()
             return autor;
         }
     }
-    private roola wybierzRole()
-    {
+
+    private roola wybierzRole() {
         Scanner scanner = new Scanner(System.in);
         int ID;
 
@@ -399,10 +397,9 @@ public User Zaloguj()
                 scanner.next(); // odrzuca niepoprawne wejście
             }
         }
-        if(ID==1){
+        if (ID == 1) {
             return roola.Uzytkownik;
-        }
-        else if(ID==2){
+        } else if (ID == 2) {
             return roola.Bibliotekarz;
         }
         return null;
@@ -435,9 +432,9 @@ public User Zaloguj()
         }
     }
 
-    public void zwrocKsiazke() {
-        Uzytkownik u = (Uzytkownik) wybierzUzytkownika();
+    public void zwrocKsiazke(User U) {
 
+        Uzytkownik u=(Uzytkownik)U;
         System.out.println("Którą ksiazke chcesz zwrócic? Wybierz numer: \n");
         wyswietlListeWypozyczen(u);
         int ID;
@@ -449,13 +446,16 @@ public User Zaloguj()
         for (Wypozyczenia wyp : listaWypozyczen) {
             if (wyp.getUzytkownikBiblioteki().equals(u) && wyp.getWypozyczonaKsiazka().equals(ksiazka)) {
 
-                u.zwrocKsiazke(wyp.getWypozyczonaKsiazka());
+                //u.zwrocKsiazke(wyp.getWypozyczonaKsiazka());
                 wyp.getWypozyczonaKsiazka().zwroc();
                 wyp.zakonczWypozyczenie();
                 doUsuniecia = wyp;
+                u.removeFromListWypozyczen(ksiazka);
+                ksiazka.setCzyDostepna(true);
             }
         }
         listaWypozyczenZakonczonych.add(doUsuniecia);
+
         listaWypozyczen.remove(doUsuniecia);
 
 
@@ -467,6 +467,7 @@ public User Zaloguj()
         System.out.println(ksiazka.isCzyDostepna());
         System.out.println("lista zakończonych wypożyczen!");
         wyswietlListeWypozyczenZakonczonych();
+
     }
 
     public void odczytPlikuKsiazki() {

@@ -14,6 +14,7 @@ public class Biblioteka {
     public List<Wypozyczenia> listaWypozyczen;
     public List<Wypozyczenia> listaWypozyczenZakonczonych;
 
+
     public Biblioteka(String nazwa, String adres) {
         this.nazwa = nazwa;
         this.adres = adres;
@@ -22,6 +23,10 @@ public class Biblioteka {
         this.userWrazZID = new HashMap<>();
         this.listaWypozyczen = new ArrayList<>();
         this.listaWypozyczenZakonczonych = new ArrayList<>();
+    }
+
+    public Map<Integer, User> getUserWrazZID() {
+        return userWrazZID;
     }
 
     public void Start() {
@@ -201,7 +206,9 @@ public class Biblioteka {
     public void wyswietlListeKsiazek() {
 
         for (Map.Entry<Integer, Ksiazka> e : ksiazkiWrazZID.entrySet()) {
-            System.out.println(e.getKey() + " -> " + e.getValue().toString());
+            if(e.getValue().isCzyDostepna())
+            {//stworz liste niedostepnych i tam prztrymuj te niedostepne. liste zwroc i zapisz do plik
+            System.out.println(e.getKey() + " -> " + e.getValue().toString());}
         }
 
 

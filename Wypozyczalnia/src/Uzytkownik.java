@@ -168,9 +168,9 @@ public class Uzytkownik extends User implements wypozyczającyKsiazki {
         }
     }
 
-    public void wyswietlListeSwoichWypozyczen() {
+    //public void wyswietlListeSwoichWypozyczen() {
 
-    }
+    //}
 
     public void wyswietlListeSwoichWypozyczen(Biblioteka biblioteka) {
         biblioteka.wyswietlListeWypozyczen(this);

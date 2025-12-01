@@ -11,17 +11,24 @@ public class Main {
         User mariusz = new Uzytkownik("Mariusz", "Pudzianowski", 23221);
         User panBibliotekarz = new Bibliotekarz("Pan", "Bibliotekarz", 123);
         k3.setCzyDostepna(false);
-        Map<Integer,String>mapa =new HashMap<Integer,String>();
-        ArrayList<String> lista=new ArrayList<String>();
-        mapa.put(0,"Cezary");
-        mapa.put(1,"Adam");
-        mapa.put(2,"Adrian");
-        mapa.put(3,"Karol");
-        mapa.put(4,"Łukasz");
-        mapa.put(5,"Rafał");
-        mapa.put(6,"Hubert");
-        mapa.put(7,"Cezar");
+//        Map<Integer,String>mapa =new HashMap<Integer,String>();
+//        ArrayList<String> lista=new ArrayList<String>();
+//        mapa.put(0,"Cezary");
+//        mapa.put(1,"Adam");
+//        mapa.put(2,"Adrian");
+//        mapa.put(3,"Karol");
+//        mapa.put(4,"Łukasz");
+//        mapa.put(5,"Rafał");
+//        mapa.put(6,"Hubert");
+//        mapa.put(7,"Cezar");
+
+        //BibliotekaPodkowa.odczytPlikuKsiazki();
+        //System.out.println(BibliotekaPodkowa.getKsiazkiWrazZID());
+        //Bibliotekarz adek=new Bibliotekarz("adek","miauczynski",1);
         BibliotekaPodkowa.Start();
+//       ( (Bibliotekarz)  panBibliotekarz).usunZBiblioteki(BibliotekaPodkowa);
+//
+//       ((Bibliotekarz) panBibliotekarz).wyswietlListeKsiazek(BibliotekaPodkowa);
         //System.out.println(mapa.entrySet());
 //    for(Map.Entry<Integer,String> x :mapa.entrySet())
 //        {

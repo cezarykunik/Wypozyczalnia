@@ -124,6 +124,16 @@ public class Biblioteka {
         ksiazkiWrazZID.put(noweID, nowa);
     }
 
+
+
+    public Map<Integer, Ksiazka> getKsiazkiWrazZID() {
+        return ksiazkiWrazZID;
+    }
+
+    public void setKsiazkiWrazZID(Map<Integer, Ksiazka> ksiazkiWrazZID) {
+        this.ksiazkiWrazZID = ksiazkiWrazZID;
+    }
+
     public void dodajKsiazke(Ksiazka k) {
         int noweID = ksiazkiWrazZID.size() + 1;  // automatyczne ID
         ksiazkiWrazZID.put(noweID, k);
@@ -499,6 +509,31 @@ public class Biblioteka {
             e.printStackTrace();
         }
     }
+    public List<Ksiazka> wczytajKsiazkiIZwrocListe() {
+        List<Ksiazka > lista=new ArrayList<Ksiazka>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("ksiazki.txt"));
+
+            String linia;
+            while ((linia = br.readLine()) != null) {
+                // System.out.println(linia);
+                String[] liniaSplit = linia.split(",");
+                Ksiazka ksiazka = new Ksiazka(liniaSplit[0],
+                        Integer.parseInt(liniaSplit[1]),
+                        liniaSplit[2], Integer.parseInt(liniaSplit[3]));// odczyt linii
+                // z pliku, podzial stringa na slowa,
+                //inicjalizacja konstruktora ksiazka odczytanymi danymi
+                int noweID = lista.size() ;  // automatyczne ID
+                lista.add(noweID, ksiazka);
+            }
+
+            br.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 
     public void odczytPlikuUzytkownicy() {
         try {
@@ -529,4 +564,7 @@ public class Biblioteka {
             e.printStackTrace();
         }
     }
+
+
+
 }

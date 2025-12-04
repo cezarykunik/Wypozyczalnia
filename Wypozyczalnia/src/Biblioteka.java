@@ -14,7 +14,6 @@ public class Biblioteka {
     public List<Wypozyczenia> listaWypozyczen;
     public List<Wypozyczenia> listaWypozyczenZakonczonych;
 
-
     public Biblioteka(String nazwa, String adres) {
         this.nazwa = nazwa;
         this.adres = adres;
@@ -24,7 +23,6 @@ public class Biblioteka {
         this.listaWypozyczen = new ArrayList<>();
         this.listaWypozyczenZakonczonych = new ArrayList<>();
     }
-
     public Map<Integer, User> getUserWrazZID() {
         return userWrazZID;
     }
@@ -34,11 +32,7 @@ public class Biblioteka {
         odczytPlikuKsiazki();
 
         while (true) {
-
-            System.out.println("1->Wybierz Uzytkownika z Listy dostępnych uzytkownikow");
-            System.out.println("2->Dodaj Uzytkownika do listy  uzytkownikow");
-            System.out.println("3->Wyjdz z programu ");
-            int x = wybierzNumerWmenu();
+            int x = MENU.StartMenu();
             User zalogowany = null;
             switch (x) {
                 case 1:
@@ -85,13 +79,10 @@ public class Biblioteka {
 
     public void dodajUzytkownika() {
 
-        Scanner scanner = new Scanner(System.in);
-
-
-        String imie = wczytajImieUzytkownika();
-        String Nazwisko = wczytajNazwiskoUzytkownika();
-        int ID = wczytajID();
-        roola r = wybierzRole();
+        String imie = MENU.wczytajImieUzytkownika();
+        String Nazwisko = MENU.wczytajNazwiskoUzytkownika();
+        int ID = MENU.wczytajID();
+        roola r = MENU.wybierzRole();
         int IDUser = userWrazZID.size() + 1;
         if (r == roola.Uzytkownik) {
             Uzytkownik nowy = new Uzytkownik(imie, Nazwisko, ID);
@@ -112,19 +103,13 @@ public class Biblioteka {
 
     public void dodajKsiazke() {
         int noweID = ksiazkiWrazZID.size() + 1;  // automatyczne ID
-
-        Scanner scanner = new Scanner(System.in);
-
-        String Tytul = wczytajTytul();
-        int ID = wczytajID();
-        String Autor = wczytajAutora();
-        int rokWydania = wczytajRokwydania();
-
+        String Tytul = MENU.wczytajTytul();
+        int ID = MENU.wczytajID();
+        String Autor = MENU.wczytajAutora();
+        int rokWydania = MENU.wczytajRokwydania();
         Ksiazka nowa = new Ksiazka(Tytul, ID, Autor, rokWydania);
         ksiazkiWrazZID.put(noweID, nowa);
     }
-
-
 
     public Map<Integer, Ksiazka> getKsiazkiWrazZID() {
         return ksiazkiWrazZID;
@@ -144,19 +129,16 @@ public class Biblioteka {
         System.out.println("Wyswietlę teraz liste ksiązek :\n");
         wyswietlListeKsiazek();
         System.out.println("Którą ksiazke chcesz wypożyczyc? Wybierz numer: ");
-        int ID;
-        ID = wybierzNumerWmenu();
+        int ID = MENU.wybierzNumerWmenu();
         Ksiazka wybrana = ksiazkiWrazZID.get(ID);
 
         if (wybrana.SprawdzDostepnoscIwypozycz()) {
-            //((Uzytkownik) u).wypozyczKsiazke(wybrana);
             Wypozyczenia x = new Wypozyczenia(wybrana, (Uzytkownik) u);
             listaWypozyczen.add(x);
             x.setID(listaWypozyczen.size());
             ((Uzytkownik) u).addToListWypozyczen(wybrana);
             System.out.println("Wyświetlę teraz wszystkie zarejestrowane rekordy wypożyczeń w naszej bibliotece");
             System.out.println(listaWypozyczen.toString());
-
         } else {
             System.out.println("Spróbujemy jeszcze raz!");
             wypozyczKsiazke(u);
@@ -168,28 +150,34 @@ public class Biblioteka {
         Uzytkownik wybrany = null;
         while (true) {
             System.out.println("Wybierz co chcesz zrobic: \n 1-> Wybierz istniejącego użytkownika \n " + "2-> Stwórz użytkownika \n 3-> Wyjdź z menu");
-            int x = wybierzNumerWmenu();
+            int x = MENU.wybierzNumerWmenu();
 
             switch (x) {
                 case 1:
                     System.out.println("Lista użytkownikow w bazie: \n");
                     wyświetlListeUzytkownikow();
                     System.out.println("Wybierz nuemr o 1 wiekszy niż maksymalny wyświetlony, aby powrócic do menu");
-                    int c = wybierzNumerWmenu();
+                    int c = MENU.wybierzNumerWmenu();
 
                     if (c == userWrazZID.size() + 1) {
                         continue;
                     } else {
                         System.out.println("Wybrales: " + userWrazZID.get(c));
-                        wybrany = (Uzytkownik) userWrazZID.get(c);
-                        break;
+                        if (wybrany instanceof Uzytkownik) {
+                            wybrany = (Uzytkownik) userWrazZID.get(c);
+                        } else {
+                            System.out.println("wybrales bibliotekarza... nie oszukuj..");
+                        }
+
                     }
+                    break;
+
                 case 2:
                     dodajUzytkownika();
                     System.out.println("Wyświetlę teraz listę uzytkowników!");
                     wyświetlListeUzytkownikow();
                     System.out.println("Wybierz teraz użytkownika do dalszej pracy \n" + "Jeśli chcesz wrócic do poprzedniego Menu, kliknij numer o 1 większy niż" + " wyświetlany maksymalny numer");
-                    int q = wybierzNumerWmenu();
+                    int q = MENU.wybierzNumerWmenu();
 
                     if (q == userWrazZID.size() + 1) {
                         continue;
@@ -212,13 +200,12 @@ public class Biblioteka {
         }
     }
 
-
     public void wyswietlListeKsiazek() {
 
         for (Map.Entry<Integer, Ksiazka> e : ksiazkiWrazZID.entrySet()) {
-            if(e.getValue().isCzyDostepna())
-            {//stworz liste niedostepnych i tam prztrymuj te niedostepne. liste zwroc i zapisz do plik
-            System.out.println(e.getKey() + " -> " + e.getValue().toString());}
+            if (e.getValue().isCzyDostepna()) {//stworz liste niedostepnych i tam prztrymuj te niedostepne. liste zwroc i zapisz do plik
+                System.out.println(e.getKey() + " -> " + e.getValue().toString());
+            }
         }
 
 
@@ -253,7 +240,6 @@ public class Biblioteka {
         }
     }
 
-
     public void wyświetlListeUzytkownikow() {
         for (Map.Entry<Integer, User> e : userWrazZID.entrySet()) {
             System.out.println(e.getKey() + " -> " + e.getValue().toString());
@@ -261,209 +247,19 @@ public class Biblioteka {
 
     }
 
-    private int wczytajID() {
-        Scanner scanner = new Scanner(System.in);
-        int ID;
-
-        while (true) {
-            System.out.println("Wpisz ID książki:");
-
-            if (scanner.hasNextInt()) {  // sprawdza, czy następne wejście jest liczbą całkowitą
-                ID = scanner.nextInt();
-                break; // wychodzi z pętli, jeśli poprawne ID
-            } else {
-                System.out.println("Błąd! Wpisz liczbę całkowitą.");
-                scanner.next(); // odrzuca niepoprawne wejście
-            }
-        }
-
-        return ID;
-    }
-
-    public int wybierzNumerWmenu() {
-        Scanner scanner = new Scanner(System.in);
-        int ID;
-
-        while (true) {
-            System.out.println("Wybierz numer polecenia:");
-
-            if (scanner.hasNextInt()) {  // sprawdza, czy następne wejście jest liczbą całkowitą
-                ID = scanner.nextInt();
-                break; // wychodzi z pętli, jeśli poprawne ID
-            } else {
-                System.out.println("Błąd! Wpisz liczbę całkowitą.");
-                scanner.next(); // odrzuca niepoprawne wejście
-            }
-        }
-
-        return ID;
-    }// ID user to jedno, ID ksiazki to durgie, ID wypozyczenia to co innego
-
-    private int wczytajRokwydania() {
-        Scanner scanner = new Scanner(System.in);
-        int rokWydania;
-
-        while (true) {
-            System.out.println("Wpisz rok wydania książki:");
-
-            if (scanner.hasNextInt()) {  // sprawdza, czy następne wejście jest liczbą całkowitą
-                rokWydania = scanner.nextInt();
-                break; // wychodzi z pętli, jeśli poprawne rokWydania
-            } else {
-                System.out.println("Błąd! Wpisz liczbę całkowitą.");
-                scanner.next(); // odrzuca niepoprawne wejście
-            }
-        }
-
-        return rokWydania;
-    }
-
-    private String wczytajTytul() {
-
-        Scanner scanner = new Scanner(System.in);
-        String tytul;
-
-        while (true) {
-            System.out.println("Wpisz tytuł książki:");
-
-            tytul = scanner.nextLine().trim();
-
-            // Sprawdzenie: nie może być pusty
-            if (tytul.isEmpty()) {
-                System.out.println("Tytuł nie może być pusty!");
-                continue;
-            }
-
-            // Sprawdzenie: nie może zawierać cyfr
-            if (!tytul.matches("[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]+")) {
-                System.out.println("Tytuł może zawierać tylko litery i spacje!");
-                continue;
-            }
-
-            // Jeśli tu dotarliśmy -> tytuł jest poprawny
-            return tytul;
-        }
-    }
-
-    private String wczytajAutora() {
-
-        Scanner scanner = new Scanner(System.in);
-        String autor;
-
-        while (true) {
-            System.out.println("Wpisz autora książki:");
-
-            autor = scanner.nextLine().trim();
-
-            // Sprawdzenie: nie może być pusty
-            if (autor.isEmpty()) {
-                System.out.println("Tytuł nie może być pusty!");
-                continue;
-            }
-
-            // Sprawdzenie: nie może zawierać cyfr
-            if (!autor.matches("[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]+")) {
-                System.out.println("Autor może zawierać tylko litery i spacje!");
-                continue;
-            }
-
-            // Jeśli tu dotarliśmy -> autor jest poprawny
-            return autor;
-        }
-    }
-
-    private String wczytajImieUzytkownika() {
-
-        Scanner scanner = new Scanner(System.in);
-        String autor;
-
-        while (true) {
-            System.out.println("Wpisz imie uzytkownika:");
-
-            autor = scanner.nextLine().trim();
-
-            // Sprawdzenie: nie może być pusty
-            if (autor.isEmpty()) {
-                System.out.println("wpis nie może być pusty!");
-                continue;
-            }
-
-            // Sprawdzenie: nie może zawierać cyfr
-            if (!autor.matches("[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]+")) {
-                System.out.println("wpis może zawierać tylko litery i spacje!");
-                continue;
-            }
-
-            // Jeśli tu dotarliśmy -> autor jest poprawny
-            return autor;
-        }
-    }
-
-    private roola wybierzRole() {
-        Scanner scanner = new Scanner(System.in);
-        int ID;
-
-        while (true) {
-            System.out.println("Wybierz 1- Uzytkownik lub 2- Bibliotekarz");
-
-            if (scanner.hasNextInt()) {  // sprawdza, czy następne wejście jest liczbą całkowitą
-                ID = scanner.nextInt();
-                break; // wychodzi z pętli, jeśli poprawne ID
-            } else {
-                System.out.println("Błąd! Wpisz liczbę całkowitą.");
-                scanner.next(); // odrzuca niepoprawne wejście
-            }
-        }
-        if (ID == 1) {
-            return roola.Uzytkownik;
-        } else if (ID == 2) {
-            return roola.Bibliotekarz;
-        }
-        return null;
-    }
-
-    private String wczytajNazwiskoUzytkownika() {
-
-        Scanner scanner = new Scanner(System.in);
-        String autor;
-
-        while (true) {
-            System.out.println("Wpisz nazwisko uzytkownika:");
-
-            autor = scanner.nextLine().trim();
-
-            // Sprawdzenie: nie może być pusty
-            if (autor.isEmpty()) {
-                System.out.println("wpis nie może być pusty!");
-                continue;
-            }
-
-            // Sprawdzenie: nie może zawierać cyfr
-            if (!autor.matches("[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]+")) {
-                System.out.println("wpis może zawierać tylko litery i spacje!");
-                continue;
-            }
-
-            // Jeśli tu dotarliśmy -> autor jest poprawny
-            return autor;
-        }
-    }
-
     public void zwrocKsiazke(User U) {
 
-        Uzytkownik u=(Uzytkownik)U;
+        Uzytkownik u = (Uzytkownik) U;
         System.out.println("Którą ksiazke chcesz zwrócic? Wybierz numer: \n");
         wyswietlListeWypozyczen(u);
         int ID;
-        ID = wybierzNumerWmenu() - 1;
+        ID = MENU.wybierzNumerWmenu() - 1;
         Ksiazka ksiazka = listaWypozyczen.get(ID).getWypozyczonaKsiazka();
 
 
         Wypozyczenia doUsuniecia = null;
         for (Wypozyczenia wyp : listaWypozyczen) {
             if (wyp.getUzytkownikBiblioteki().equals(u) && wyp.getWypozyczonaKsiazka().equals(ksiazka)) {
-
-                //u.zwrocKsiazke(wyp.getWypozyczonaKsiazka());
                 wyp.getWypozyczonaKsiazka().zwroc();
                 wyp.zakonczWypozyczenie();
                 doUsuniecia = wyp;
@@ -472,7 +268,6 @@ public class Biblioteka {
             }
         }
         listaWypozyczenZakonczonych.add(doUsuniecia);
-
         listaWypozyczen.remove(doUsuniecia);
 
 
@@ -509,8 +304,9 @@ public class Biblioteka {
             e.printStackTrace();
         }
     }
+
     public List<Ksiazka> wczytajKsiazkiIZwrocListe() {
-        List<Ksiazka > lista=new ArrayList<Ksiazka>();
+        List<Ksiazka> lista = new ArrayList<Ksiazka>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("ksiazki.txt"));
 
@@ -523,7 +319,7 @@ public class Biblioteka {
                         liniaSplit[2], Integer.parseInt(liniaSplit[3]));// odczyt linii
                 // z pliku, podzial stringa na slowa,
                 //inicjalizacja konstruktora ksiazka odczytanymi danymi
-                int noweID = lista.size() ;  // automatyczne ID
+                int noweID = lista.size();  // automatyczne ID
                 lista.add(noweID, ksiazka);
             }
 
@@ -564,7 +360,6 @@ public class Biblioteka {
             e.printStackTrace();
         }
     }
-
 
 
 }

@@ -14,15 +14,8 @@ public class Uzytkownik extends User implements wypozyczającyKsiazki {
         System.out.println("Jestem Uzytkownikiem, o to co potrafie: ");
         while (true) {
 
-            System.out.println("1-> Wyswietl wszystkie ksiazki!");
-            System.out.println("2-> Wypozycz ksiązke");
-            System.out.println("3-> Zwróc książke");
-            System.out.println("4->wyswietlListe Wypozyczen Zakonczonych- do oprogramowania");
-            System.out.println("5->Wyswietl Liste Ksiazek uzytkownika");
-            System.out.println("6-> Wyswietl liste aktualnych Wypozyczen!");
 
-            System.out.println("7-> wroc do MENU");
-            int x = this.b.wybierzNumerWmenu();
+            int x = MENU.menuUzytkownika();
             switch (x) {
                 case 1:
                     wyswietlWszystkieKsiazki(this.b);
@@ -38,8 +31,11 @@ public class Uzytkownik extends User implements wypozyczającyKsiazki {
                     break;
 
                 case 5:
+                    if(this instanceof Uzytkownik) {
                     for(Ksiazka k: listaWypozyczen) {
                         System.out.println(k);
+                    }}else{
+                        System.out.println("jestem Bibliotekarzem, nie oszukuj!");
                     }
                     break;
                 case 6:

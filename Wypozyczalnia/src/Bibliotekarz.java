@@ -22,16 +22,7 @@ public class Bibliotekarz extends User implements wladajacyBiblioteka {
         System.out.println("Jestem Bibliotekarzem, o to co potrafie: ");
         while (true) {
 
-            System.out.println("1-> Wyswietl wszystkei ksiazki!");
-            System.out.println("2-> wyświetlListeUzytkownikow");
-            System.out.println("3->wyswietlListeWypozyczenZakonczonych");
-            System.out.println("4->WyswietlListeKsiazek konkretnego uzytkownika");
-            System.out.println("5-> dodajKsiazke");
-            System.out.println("6-> Wyswietl liste aktualnych Wypozyczen!");
-            System.out.println("7-> Usun ksiazke z Listy");
-
-            System.out.println("8-> wroc do MENU");
-            int x = this.b.wybierzNumerWmenu();
+            int x = MENU.MenuBibliotekarzglowne();
             switch (x) {
                 case 1:
                     wyswietlWszystkieKsiazki(this.b);
@@ -44,7 +35,11 @@ public class Bibliotekarz extends User implements wladajacyBiblioteka {
                     break;
                 case 4:
                     User u = b.wybierzUzytkownika();
-                    wyswietlListeWypozyczen(this.b, (Uzytkownik) u);
+                    if(u instanceof Uzytkownik) {
+                    wyswietlListeWypozyczen(this.b, (Uzytkownik) u);}
+                    else{
+                        System.out.println("jestem bibliotekarzem, nie oszukuj!");
+                    }
                     break;
                 case 5:
                     dodajKsiazke(this.b);
@@ -113,7 +108,7 @@ public class Bibliotekarz extends User implements wladajacyBiblioteka {
     }
 
     public void usunZBiblioteki(Biblioteka b) {
-       // b.odczytPlikuKsiazki();
+
         Map<Integer, Ksiazka> mapa = new HashMap<>();
         mapa = b.getKsiazkiWrazZID();
         List<Map.Entry<Integer, Ksiazka>> lista = new ArrayList<>(mapa.entrySet());
@@ -124,77 +119,68 @@ public class Bibliotekarz extends User implements wladajacyBiblioteka {
             return;
         }
 
-
         Map.Entry<Integer, Ksiazka> current = it.next();
         boolean bolin = true;
         System.out.println(current.getValue());
-        // System.out.println(current.getValue());
+
         while (bolin) {
-            System.out.println("1-> Wyświetl kolejny rekord");
-            System.out.println("2-> Wyświetl poprzedni rekord");
-            System.out.println("3-> Usun rekord");
-            System.out.println("4-> Wroc do Menu");
 
-            Scanner scanner = new Scanner(System.in);
+            int numer = MENU.MenuBibliotekarzUsunPozycje();
 
-            if (scanner.hasNextInt()) {
-                int numer = scanner.nextInt();
-                switch (numer) {
-                    case 1:
-                        if (it.hasNext()) {
-                            current = it.next();
-                            System.out.println(current.getValue());
-                        } else {
-                            System.out.println("To już ostatni rekord.");
-                        }
-                        break;
-                    case 2:
-                        if (it.hasPrevious()) {
-                            current = it.previous();
-                            System.out.println(current.getValue());
-                        } else {
-                            System.out.println("To już pierwszy rekord.");
-                        }
-                        break;
+            switch (numer) {
+                case 1:
+                    if (it.hasNext()) {
+                        current = it.next();
+                        System.out.println(current.getValue());
+                    } else {
+                        System.out.println("To już ostatni rekord.");
+                    }
+                    break;
+                case 2:
+                    if (it.hasPrevious()) {
+                        current = it.previous();
+                        System.out.println(current.getValue());
+                    } else {
+                        System.out.println("To już pierwszy rekord.");
+                    }
+                    break;
 
-                    case 3:
+                case 3:
 
-                        Ksiazka usuwana = current.getValue();
-                        Integer klucz = current.getKey();
-                        if(usuwana.isCzyDostepna()==true) {
-                            System.out.println("Usunięto: " + usuwana);
+                    Ksiazka usuwana = current.getValue();
+                    Integer klucz = current.getKey();
+                    if (usuwana.isCzyDostepna() == true) {
+                        System.out.println("Usunięto: " + usuwana);
 
-                            it.remove();      // usuwa z listy
-                            mapa.remove(klucz); // usuwa z mapy
-                        }else{
-                            System.out.println("nie usune, jest wypozyczona");
-                        }
-                        // automatycznie przesuwa iterator poprawnie
-                        if (it.hasNext()) {
-                            current = it.next();
-                        } else if (it.hasPrevious()) {
-                            current = it.previous();
-                        } else {
-                            System.out.println("Lista jest teraz pusta.");
-                            return;
-                        }
+                        it.remove();      // usuwa z listy
+                        mapa.remove(klucz); // usuwa z mapy
+                    } else {
+                        System.out.println("nie usune, jest wypozyczona");
+                    }
+                    // automatycznie przesuwa iterator poprawnie
+                    if (it.hasNext()) {
+                        current = it.next();
+                    } else if (it.hasPrevious()) {
+                        current = it.previous();
+                    } else {
+                        System.out.println("Lista jest teraz pusta.");
+                        return;
+                    }
 
-                        System.out.println("Teraz wskazuje: " + current.getValue());
-                        break;
+                    System.out.println("Teraz wskazuje: " + current.getValue());
+                    break;
 
-                    case 4:
-                        bolin = false;
+                case 4:
+                    bolin = false;
 
-                }
-            } else {
-                System.out.println("nieprawidlowa wartosc");
-                scanner.next();
             }
         }
-
         b.setKsiazkiWrazZID(mapa);
     }
 
+
 }
+
+
 
 
